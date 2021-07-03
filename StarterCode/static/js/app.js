@@ -16,6 +16,26 @@ function buildMetadata(sample) {
         var result = resultArray[0]; 
         console.log(result); 
 
+        //BONUS 
+        var washFreq = result.wfreq; 
+        console.log(washFreq); 
+
+        //WASH FREQ "SINGLE ANGULAR GAUGE CHART"
+        var gaugeTime = [
+            {
+                domain: {x: [0,1], y: [0,1]},
+                value: washFreq, 
+                title: {text: "How Often This Person Washes That Belly Button <br> Scrubs Per Week"}, 
+                type: "indicator",
+                mode: "gauge+number", //this must be gauge+number  - gauge + number will not work 
+                gauge: {axis: {range: [null, 9] } }
+            }
+           ];       
+
+            var gaugeLayout = {width: 600, height: 400};
+    
+        Plotly.plot("gauge", gaugeTime, gaugeLayout); 
+
         var panel = d3.select("#sample-metadata"); //panel comes from HTML division class; sample-metadata is the division ID 
         //clear the panel before inserting all your metadata by passing an empty string ""
         panel.html(""); 
@@ -106,6 +126,9 @@ function buildCharts(sample) {
             }, 
         };
         Plotly.plot("bubble", bubbleData, bubbleLayout); 
+
+        
+
     }); //DATA ACCESS ENDS HERE   
 };  //END OF FUNCTION BUILDCHARTS
 
@@ -130,13 +153,13 @@ function init() {
 function optionChanged(nextSample) {
     buildMetadata(nextSample); //So when you change the sample ID, change the metadata, which changes the data you pull....
     buildCharts(nextSample); //....which changes the charts 
-}
+}; 
 
 // INITIALIZE ALL OF IT
 init(); 
 
 
-
+// MAKE THIS GENERAL AND NOT ID 940 SPECIFIC 
 
 
 
