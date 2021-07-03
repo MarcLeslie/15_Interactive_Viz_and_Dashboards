@@ -35,7 +35,7 @@ function buildMetadata(sample) {
 
             var gaugeLayout = {width: 600, height: 400};
     
-        Plotly.plot("gauge", gaugeTime, gaugeLayout); 
+        Plotly.newPlot("gauge", gaugeTime, gaugeLayout); 
 
         var panel = d3.select("#sample-metadata"); //panel comes from HTML division class; sample-metadata is the division ID 
         //clear the panel before inserting all your metadata by passing an empty string ""
@@ -54,13 +54,14 @@ function buildMetadata(sample) {
 function buildCharts(sample) {
     //GET YOUR DATA 
     d3.json("samples.json").then(function(data) {
+        let resultArray = [];
         console.log(data);  //You could also do (data.samples) 
         var samples = data.samples; //calls out the subset of data that has the data for this section 
         console.log(samples); 
 
         //FILTER DATA FOR JUST ONE PERSON 
         // sampleObj is the same as forEachRow
-        var resultArray = samples.filter(sampleObj => sampleObj.id == sample);
+        resultArray = samples.filter(sampleObj => sampleObj.id == sample);
         console.log(resultArray); //This gives you the array for just one person
 
         //pull out the data from the array 
@@ -95,7 +96,7 @@ function buildCharts(sample) {
             }, 
         }; 
 
-        Plotly.plot("bar", barData, barLayout); 
+        Plotly.newPlot("bar", barData, barLayout); 
 
         //BUBBLE CHART - HAS PRETTY MUCH THE EXACT SAME DATA AS THE BAR CHART BUT, YOU KNOW, BUBBLES
         var bubbleTime = {
@@ -126,7 +127,7 @@ function buildCharts(sample) {
                 left: 0,
             }, 
         };
-        Plotly.plot("bubble", bubbleData, bubbleLayout); 
+        Plotly.newPlot("bubble", bubbleData, bubbleLayout); 
 
         
 
@@ -140,7 +141,7 @@ function init() {
         d3.json("samples.json").then(function(data) {
 
             var names = data.names;
-            console.log(data.names);  
+            console.log(data.names);
 
             names.forEach((sample) => {
                 pullDownMenu.append("option").property("value" , sample).text(sample); //this creates under the ID selDataset in Insepct and gives you all the IDS; .property gives dropdown, .text gives you the IDs
