@@ -67,20 +67,44 @@ function buildCharts(sample) {
         var barLayout = {
             title: "Top 10 Bacteria Found in This Person's Bellybutton", 
             margin: {
-                top: 220,
-                right: 220,
-                bottom: 220,
-                left: 220,
+                top: 20,
+                right: 20,
+                bottom: 20,
+                left: 250,
             }, 
         }; 
 
-
-
         Plotly.plot("bar", barData, barLayout); 
 
+        //BUBBLE CHART - HAS PRETTY MUCH THE EXACT SAME DATA AS THE BAR CHART BUT, YOU KNOW, BUBBLES
+        var bubbleTime = {
+            y: otu_ids.slice(0, 10).map(otu_ids => `OTU ${otu_ids}`).reverse(),
+            x: sample_values.slice(0, 10).reverse(),
+            mode: "markers",
+            marker: {
+                size: [40, 60, 80, 100],
+                color: ['rbg(255, 255, 0)' , 'rbg(255, 102, 102)' , 'rbg(255, 0, 127)' , 'rbg(0, 204, 102)']
+            }
+        }; 
 
-    });   
+        var bubbleData = [bubbleTime]; 
+
+        var bubbleLayout = {
+            title: "Bacteria Cultures Per Sample", 
+            showlegend: false, 
+            height: 600,
+            width: 1200
+        };
+
+        Plotly.plot("bubble", bubbleData, bubbleLayout); 
+
+
+
+    }); //DATA ACCESS ENDS HERE   
 };  //END OF FUNCTION BUILDCHARTS
+
+
+
 
 
 
@@ -88,6 +112,7 @@ function buildCharts(sample) {
 function init() {
     buildMetadata(940); //adding 940 here tells it to run the above function just for person # 940
     buildCharts(940); 
+
 }; 
 
 init(); 
