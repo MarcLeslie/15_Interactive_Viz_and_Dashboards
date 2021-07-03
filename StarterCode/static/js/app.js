@@ -1,20 +1,36 @@
 //POPULATE DROPDOWN 
 function buildMetadata(sample) {
 
-//GET YOUR DATA
-d3.json("samples.json").then(function(data) {
-    console.log(data);  //You could also do (data.samples) 
-    var metadata = data.metadata; 
-    console.log(metadata); 
-    
-    //FILTER DATA FOR JUST ONE PERSON
-    var resultArray = metadata.filter(); 
-});
+    //GET YOUR DATA
+    d3.json("samples.json").then(function(data) {
+        console.log(data);  //You could also do (data.samples) 
+        var metadata = data.metadata; 
+        console.log(metadata); 
+        
+        //FILTER DATA FOR JUST ONE PERSON 
+        // sampleObj is the same as forEachRow
+        var resultArray = metadata.filter(sampleObj => sampleObj.id == sample); 
+        console.log(resultArray); //This gives you the array for just one person
+
+        //pull out the data from the array 
+        var result = resultArray[0]; 
+        console.log(result); 
+
+        var panel = d3.select("#sample-metadata"); //panel comes from HTML division class; sample-metadata is the division ID 
+        //clear the panel before inserting all your metadata by passing an empty string ""
+        panel.html(""); 
+
+        //obj entries allows you to access key/value pair data - iterate over them
+        Object.entries(result).forEach(([key, value]) => {
+            panel.append("h5"); //this creates a blank h5 tag for each key/value pair
+        })
+
+    });
 }; //END OF FUNCTION  BUILD METADATA
 
 // INITIALIZE 
 function init() {
-    buildMetadata(940); 
+    buildMetadata(940); //adding 940 here tells it to run the above function just for person # 940
 }
 
 init(); 
