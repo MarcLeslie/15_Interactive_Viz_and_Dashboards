@@ -1,20 +1,52 @@
-//READ IN JSON FILE
+//POPULATE DROPDOWN 
+function buildMetadata(sample) {
+
+//GET YOUR DATA
 d3.json("samples.json").then(function(data) {
-    console.log(data); 
-    console.log(data.samples); 
-
+    console.log(data);  //You could also do (data.samples) 
+    var metadata = data.metadata; 
+    console.log(metadata); 
     
-    // var TEST = d3.select("#sample-metadata");
-    //test.html(""); THIS CLEARS OUT THE HTML TO MAKE IT BLANK
-    // console.log(TEST);
-}); 
+    //FILTER DATA FOR JUST ONE PERSON
+    var resultArray = metadata.filter(); 
+});
+}; //END OF FUNCTION  BUILD METADATA
 
+// INITIALIZE 
+function init() {
+    buildMetadata(940); 
+}
+
+init(); 
+
+
+
+
+
+
+
+
+
+
+
+
+
+// PART 1: DEMO INFO
+// PART 2: BAR CHART
+// PART 3: BUBBLE CHART
+// BONUS: RPM CHART
+// WILL NEED TO START WITH INIT
+
+
+
+
+
+
+// ###################################################################################################################
 
 // START WITH DROP DOWN AND TRY TO POPULATE IT FOR ONE SPECIFIC ID THIS IS WHAT STEVE SAYS WILL HELP TO GET YOU STARTED 
 
 // SAME CONCEPT AS THE TABLE SECTION FOR THE UFO HW
-console.log("#######################################"); 
-
 
 
 //Display a default plot by using the init function WHICH YOU CALL AT THE END
@@ -30,11 +62,4 @@ console.log("#######################################");
 //       cell.text(value);
 //     });
 //   });
-// };
-  
-  
-  
- 
-
-//function buildMetadata(sample)
-//function buildCharts(sample)
+// }
