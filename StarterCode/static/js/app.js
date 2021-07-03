@@ -20,7 +20,8 @@ function buildMetadata(sample) {
         var washFreq = result.wfreq; 
         console.log(washFreq); 
 
-        //WASH FREQ "SINGLE ANGULAR GAUGE CHART"
+        //WASH FREQ "SINGLE ANGULAR GAUGE CHART" 
+        // WHY IS THIS HERE AND NOT AT THE BOTTOM?????????????????
         var gaugeTime = [
             {
                 domain: {x: [0,1], y: [0,1]},
@@ -139,17 +140,18 @@ function init() {
         d3.json("samples.json").then(function(data) {
 
             var names = data.names;
-            console.log(data.names);  //You could also do (data.samples) 
+            console.log(data.names);  
 
             names.forEach((sample) => {
                 pullDownMenu.append("option").property("value" , sample).text(sample); //this creates under the ID selDataset in Insepct and gives you all the IDS; .property gives dropdown, .text gives you the IDs
             });
         });
     buildMetadata(940); //adding 940 here tells it to run the above function just for person # 940
-    buildCharts(940); 
+    buildCharts(940); //adding 940 here tells it to run the above function just for person # 940
 }; 
 
-// Make it so that the change in sample ID = change in data
+// Make it so that the change in sample ID = change in data  
+// WHY IS THE RPM CHART NOT PUT DOWN HERE?????????????????????????
 function optionChanged(nextSample) {
     buildMetadata(nextSample); //So when you change the sample ID, change the metadata, which changes the data you pull....
     buildCharts(nextSample); //....which changes the charts 
