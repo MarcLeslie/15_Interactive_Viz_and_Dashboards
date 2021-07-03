@@ -78,12 +78,13 @@ function buildCharts(sample) {
 
         //BUBBLE CHART - HAS PRETTY MUCH THE EXACT SAME DATA AS THE BAR CHART BUT, YOU KNOW, BUBBLES
         var bubbleTime = {
-            y: otu_ids.slice(0, 10).map(otu_ids => `OTU ${otu_ids}`).reverse(),
-            x: sample_values.slice(0, 10).reverse(),
+            x: otu_ids.slice(0, 10).map(otu_ids => `OTU ${otu_ids}`).reverse(),
+            y: sample_values.slice(0, 10).reverse(),
             mode: "markers",
+            text: otu_labels.slice(0, 10).reverse(), 
             marker: {
-                size: [40, 60, 80, 100],
-                color: ['rbg(255, 255, 0)' , 'rbg(255, 102, 102)' , 'rbg(255, 0, 127)' , 'rbg(0, 204, 102)']
+                size: sample_values,
+                color: otu_ids
             }
         }; 
 
