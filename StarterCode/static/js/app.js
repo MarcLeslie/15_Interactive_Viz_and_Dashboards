@@ -29,10 +29,7 @@ function buildMetadata(sample) {
 
 
 
-//BAR CHART
-// Values = sample_values
-// Labels = otu_ids
-// Hovertext = otu_labels 
+//BAR CHART: Values = sample_values, Labels = otu_ids, Hovertext = otu_labels 
 function buildCharts(sample) {
     //GET YOUR DATA 
     d3.json("samples.json").then(function(data) {
@@ -57,6 +54,29 @@ function buildCharts(sample) {
         var otu_labels = result.otu_labels; 
         console.log(otu_labels); 
 
+        //now you have the data out, so build that bar chart
+        //slice to get JUST the top 10 bacteria OTU IDS, which are already sorted in decreasing order
+        var barData = [{
+            y: otu_ids.slice(0, 10).map(otu_ids => `OTU ${otu_ids}`).reverse(),
+            x: sample_values.slice(0, 10).reverse(),
+            text: otu_labels.slice(0, 10).reverse(), 
+            type: "bar",
+            orientation: "h"
+        }]; 
+
+        var barLayout = {
+            title: "Top 10 Bacteria Found in This Person's Bellybutton", 
+            margin: {
+                top: 220,
+                right: 220,
+                bottom: 220,
+                left: 220,
+            }, 
+        }; 
+
+
+
+        Plotly.plot("bar", barData, barLayout); 
 
 
     });   
