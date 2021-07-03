@@ -1,4 +1,6 @@
 //POPULATE DROPDOWN 
+//RE NAME - DOES NOT NEED TO BE CALLED BUILD METEDATA CAN BE CALLED WHATEVER YOU WANT
+// CHANGE SAMPLE to eachPerson or eachRecord
 function buildMetadata(sample) {
 
     //GET YOUR DATA 
@@ -37,7 +39,7 @@ function buildMetadata(sample) {
     
         Plotly.newPlot("gauge", gaugeTime, gaugeLayout); 
 
-        var panel = d3.select("#sample-metadata"); //panel comes from HTML division class; sample-metadata is the division ID 
+        let panel = d3.select("#sample-metadata"); //panel comes from HTML division class; sample-metadata is the division ID 
         //clear the panel before inserting all your metadata by passing an empty string ""
         panel.html(""); 
 
@@ -49,19 +51,20 @@ function buildMetadata(sample) {
 }; //END OF FUNCTION  BUILDMETADATA
 
 
+// CHANGE ALL YOUR VARS TO LET 
+// MOVE BUBBLE CHART TO WITHIN THIS
 
 //BAR CHART: Values = sample_values, Labels = otu_ids, Hovertext = otu_labels 
 function buildCharts(sample) {
     //GET YOUR DATA 
     d3.json("samples.json").then(function(data) {
-        let resultArray = [];
         console.log(data);  //You could also do (data.samples) 
         var samples = data.samples; //calls out the subset of data that has the data for this section 
         console.log(samples); 
 
         //FILTER DATA FOR JUST ONE PERSON 
         // sampleObj is the same as forEachRow
-        resultArray = samples.filter(sampleObj => sampleObj.id == sample);
+        let resultArray = samples.filter(sampleObj => sampleObj.id == sample);
         console.log(resultArray); //This gives you the array for just one person
 
         //pull out the data from the array 
