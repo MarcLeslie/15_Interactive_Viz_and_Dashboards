@@ -5,12 +5,12 @@ function getThatData(eachRecord) {
     //GET YOUR DATA 
     d3.json("samples.json").then(function(data) {
         // console.log(data);  
-        let metadata = data.metadata; 
+        let yourData = data.metadata; 
         // console.log(metadata); 
         
         //FILTER DATA FOR JUST ONE PERSON 
         // sampleObj is the same as forEachRow
-        let resultArray = metadata.filter(eachRecordObj => eachRecordObj.id == eachRecord); 
+        let resultArray = yourData.filter(eachRecordObj => eachRecordObj.id == eachRecord); 
         // console.log(resultArray); //This gives you the array for just one person
 
         //pull out the data from the array 
