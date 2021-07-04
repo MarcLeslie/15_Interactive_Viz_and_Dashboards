@@ -17,38 +17,6 @@ function getThatData(eachRecord) {
         let result = resultArray[0]; 
         // console.log(result); 
 
-        //BONUS 
-        let washFreq = result.wfreq; 
-        // console.log(washFreq); 
-
-        //WASH FREQ "SINGLE ANGULAR GAUGE CHART" 
-        let gaugeTime = [
-            {
-                domain: {'x': [0,1], 'y': [0,1]},
-                value: washFreq, 
-                title: {text: "How Often This Person Washes That Belly Button <br> Scrubs Per Week"}, 
-                type: "indicator",
-                mode: "gauge+number", //this must be gauge+number  - gauge + number will not work   
-                gauge: {axis: {range: [null, 9], tickvals: [0,1,2,3,4,5,6,7,8,9] }, //have to do "null" instead of 0 because data has null, not 0
-                    'steps': [
-                        {'range': [0, 1], 'color': '#ffffff'},
-                        {'range': [1, 2], 'color': '#ccffff'},
-                        {'range': [2, 3], 'color': '#99ffff'},
-                        {'range': [3, 4], 'color': '#66ffff'},
-                        {'range': [4, 5], 'color': '#33ffff'},
-                        {'range': [5, 6], 'color': '#00ffff'},
-                        {'range': [6, 7], 'color': '#00cccc'},
-                        {'range': [7, 8], 'color': '#009999'},
-                        {'range': [8, 9], 'color': '#006666'},
-                    ],
-                }, 
-            }
-           ];       
-
-            let gaugeLayout = {width: 600, height: 400};
-    
-        Plotly.newPlot("gauge", gaugeTime, gaugeLayout); 
-
         let panel = d3.select("#sample-metadata"); //panel comes from HTML division class; sample-metadata is the division ID 
         //clear the panel before inserting all your metadata by passing an empty string ""
         panel.html(""); 
@@ -61,9 +29,7 @@ function getThatData(eachRecord) {
 }; //END OF FUNCTION getThatData
 
 
-
-
-function buildThoseCharts(eachRecord) {
+function buildBarChart(eachRecord) {
     //GET YOUR DATA 
     d3.json("samples.json").then(function(data) {
         // console.log(data);  
@@ -107,6 +73,33 @@ function buildThoseCharts(eachRecord) {
         }; 
 
         Plotly.newPlot("bar", barData, barLayout); 
+    }); //DATA ACCESS ENDS HERE   
+};  //END OF FUNCTION buildBarChart
+
+
+
+function buildBubbleChart(eachRecord) {
+    //GET YOUR DATA 
+    d3.json("samples.json").then(function(data) {
+        // console.log(data);  
+        let samples = data.samples; //calls out the subset of data that has the data for this section 
+        // console.log(samples); 
+
+        //BAR CHART: Values = sample_values, Labels = otu_ids, Hovertext = otu_labels 
+        let resultArray = samples.filter(eachRecordObj => eachRecordObj.id == eachRecord);
+        // console.log(resultArray); //This gives you the array for just one person
+
+        //pull out the data from the array 
+        let result = resultArray[0]; 
+        // console.log(result); 
+
+        //parse it - now that it's been pulled out 
+        let sample_values = result.sample_values; 
+        // console.log(sample_values); 
+        let otu_ids = result.otu_ids;
+        // console.log(otu_ids); 
+        let otu_labels = result.otu_labels; 
+        // console.log(otu_labels); 
 
         //BUBBLE CHART - HAS PRETTY MUCH THE EXACT SAME DATA AS THE BAR CHART BUT, YOU KNOW, BUBBLES
         let bubbleTime = {
@@ -139,7 +132,58 @@ function buildThoseCharts(eachRecord) {
         };
         Plotly.newPlot("bubble", bubbleData, bubbleLayout);
     }); //DATA ACCESS ENDS HERE   
-};  //END OF FUNCTION buildThoseCharts
+};  //END OF FUNCTION buildBubbleChart
+
+
+function buildGaugeChart(eachRecord) {
+    //GET DATA
+    d3.json("samples.json").then(function(data) {
+        // console.log(data);  
+        let yourData = data.metadata; 
+        // console.log(metadata); 
+        
+        //FILTER DATA FOR JUST ONE PERSON 
+        // sampleObj is the same as forEachRow
+        let resultArray = yourData.filter(eachRecordObj => eachRecordObj.id == eachRecord); 
+        // console.log(resultArray); //This gives you the array for just one person
+
+        //pull out the data from the array 
+        let result = resultArray[0]; 
+        // console.log(result); 
+
+        //BONUS 
+        let washFreq = result.wfreq; 
+        console.log(washFreq); 
+
+        //WASH FREQ "SINGLE ANGULAR GAUGE CHART" 
+        let gaugeTime = [
+            {
+                domain: {'x': [0,1], 'y': [0,1]},
+                value: washFreq, 
+                title: {text: "How Often This Person Washes That Belly Button <br> Scrubs Per Week"}, 
+                type: "indicator",
+                mode: "gauge+number", //this must be gauge+number  - gauge + number will not work   
+                gauge: {axis: {range: [null, 9], tickvals: [0,1,2,3,4,5,6,7,8,9] }, //have to do "null" instead of 0 because data has null, not 0
+                    'steps': [
+                        {'range': [0, 1], 'color': '#ffffff'},
+                        {'range': [1, 2], 'color': '#ccffff'},
+                        {'range': [2, 3], 'color': '#99ffff'},
+                        {'range': [3, 4], 'color': '#66ffff'},
+                        {'range': [4, 5], 'color': '#33ffff'},
+                        {'range': [5, 6], 'color': '#00ffff'},
+                        {'range': [6, 7], 'color': '#00cccc'},
+                        {'range': [7, 8], 'color': '#009999'},
+                        {'range': [8, 9], 'color': '#006666'},
+                    ],
+                }, 
+            }
+           ];       
+
+            let gaugeLayout = {width: 600, height: 400};
+    
+        Plotly.newPlot("gauge", gaugeTime, gaugeLayout); 
+    }); //DATA ACCESS ENDS HERE   
+};  //END OF FUNCTION buildGaugeChart
 
 
 // INITIALIZE 
@@ -154,14 +198,18 @@ function init() {
                 pullDownMenu.append("option").property("value" , eachRecord).text(eachRecord); //this creates under the ID selDataset in Insepct and gives you all the IDS; .property gives dropdown, .text gives you the IDs
             });
         });
-    getThatData(940); //adding 940 here tells it to run the above function just for person # 940
-    buildThoseCharts(940); //adding 940 here tells it to run the above function just for person # 940
+    getThatData(940); //adding 940 here tells it to run the above function just for person # 940 upon loading so that it populates something to look at 
+    buildBarChart(940); 
+    buildBubbleChart(940);
+    buildGaugeChart(940);
 }; 
 
-
+//Now, lets make it so that crap changes 
 function optionChanged(nextRecord) {
     getThatData(nextRecord); //So when you change the sample ID, change the metadata, which changes the data you pull....
-    buildThoseCharts(nextRecord); //....which changes the charts 
+    buildBarChart(nextRecord); //....which changes this chart 
+    buildBubbleChart(nextRecord); //...and this chart
+    buildGaugeChart(nextRecord); //..and this chart
 }; 
 
 // INITIALIZE ALL OF IT
