@@ -1,41 +1,51 @@
 //POPULATE DROPDOWN 
-//RE NAME - DOES NOT NEED TO BE CALLED BUILD METEDATA CAN BE CALLED WHATEVER YOU WANT
-// CHANGE SAMPLE to eachPerson or eachRecord
-function buildMetadata(sample) {
+
+function getThatData(eachRecord) {
 
     //GET YOUR DATA 
     d3.json("samples.json").then(function(data) {
-        console.log(data);  //You could also do (data.samples) 
-        var metadata = data.metadata; 
-        console.log(metadata); 
+        // console.log(data);  
+        let metadata = data.metadata; 
+        // console.log(metadata); 
         
         //FILTER DATA FOR JUST ONE PERSON 
         // sampleObj is the same as forEachRow
-        var resultArray = metadata.filter(sampleObj => sampleObj.id == sample); 
-        console.log(resultArray); //This gives you the array for just one person
+        let resultArray = metadata.filter(eachRecordObj => eachRecordObj.id == eachRecord); 
+        // console.log(resultArray); //This gives you the array for just one person
 
         //pull out the data from the array 
-        var result = resultArray[0]; 
-        console.log(result); 
+        let result = resultArray[0]; 
+        // console.log(result); 
 
         //BONUS 
-        var washFreq = result.wfreq; 
-        console.log(washFreq); 
+        let washFreq = result.wfreq; 
+        // console.log(washFreq); 
 
         //WASH FREQ "SINGLE ANGULAR GAUGE CHART" 
-        // WHY IS THIS HERE AND NOT AT THE BOTTOM?????????????????
-        var gaugeTime = [
+        let gaugeTime = [
             {
-                domain: {x: [0,1], y: [0,1]},
+                domain: {'x': [0,1], 'y': [0,1]},
                 value: washFreq, 
                 title: {text: "How Often This Person Washes That Belly Button <br> Scrubs Per Week"}, 
                 type: "indicator",
-                mode: "gauge+number", //this must be gauge+number  - gauge + number will not work 
-                gauge: {axis: {range: [null, 9] } }
+                mode: "gauge+number", //this must be gauge+number  - gauge + number will not work   
+                gauge: {axis: {range: [null, 9], tickvals: [0,1,2,3,4,5,6,7,8,9] }, //have to do "null" instead of 0 because data has null, not 0
+                    'steps': [
+                        {'range': [0, 1], 'color': '#ffffff'},
+                        {'range': [1, 2], 'color': '#ccffff'},
+                        {'range': [2, 3], 'color': '#99ffff'},
+                        {'range': [3, 4], 'color': '#66ffff'},
+                        {'range': [4, 5], 'color': '#33ffff'},
+                        {'range': [5, 6], 'color': '#00ffff'},
+                        {'range': [6, 7], 'color': '#00cccc'},
+                        {'range': [7, 8], 'color': '#009999'},
+                        {'range': [8, 9], 'color': '#006666'},
+                    ],
+                }, 
             }
            ];       
 
-            var gaugeLayout = {width: 600, height: 400};
+            let gaugeLayout = {width: 600, height: 400};
     
         Plotly.newPlot("gauge", gaugeTime, gaugeLayout); 
 
@@ -45,43 +55,40 @@ function buildMetadata(sample) {
 
         //obj entries allows you to access key/value pair data - iterate over them
         Object.entries(result).forEach(([key, value]) => {   //pull from the var result the info 
-            panel.append("h5").text(`${key.toUpperCase()}:${value}`); //this creates a blank h5 tag for each key/value pair - can see if you use inspect in live server; adding in .text key/value populates the data
+            panel.append("h6").text(`${key.toUpperCase()}:${value}`); //this creates a blank h5 tag for each key/value pair - can see if you use inspect in live server; adding in .text key/value populates the data
         });
     });
-}; //END OF FUNCTION  BUILDMETADATA
+}; //END OF FUNCTION getThatData
 
 
-// CHANGE ALL YOUR VARS TO LET 
-// MOVE BUBBLE CHART TO WITHIN THIS
 
-//BAR CHART: Values = sample_values, Labels = otu_ids, Hovertext = otu_labels 
-function buildCharts(sample) {
+
+function buildThoseCharts(eachRecord) {
     //GET YOUR DATA 
     d3.json("samples.json").then(function(data) {
-        console.log(data);  //You could also do (data.samples) 
-        var samples = data.samples; //calls out the subset of data that has the data for this section 
-        console.log(samples); 
+        // console.log(data);  
+        let samples = data.samples; //calls out the subset of data that has the data for this section 
+        // console.log(samples); 
 
-        //FILTER DATA FOR JUST ONE PERSON 
-        // sampleObj is the same as forEachRow
-        let resultArray = samples.filter(sampleObj => sampleObj.id == sample);
-        console.log(resultArray); //This gives you the array for just one person
+        //BAR CHART: Values = sample_values, Labels = otu_ids, Hovertext = otu_labels 
+        let resultArray = samples.filter(eachRecordObj => eachRecordObj.id == eachRecord);
+        // console.log(resultArray); //This gives you the array for just one person
 
         //pull out the data from the array 
-        var result = resultArray[0]; 
-        console.log(result); 
+        let result = resultArray[0]; 
+        // console.log(result); 
 
         //parse it - now that it's been pulled out 
-        var sample_values = result.sample_values; 
-        console.log(sample_values); 
-        var otu_ids = result.otu_ids;
-        console.log(otu_ids); 
-        var otu_labels = result.otu_labels; 
-        console.log(otu_labels); 
+        let sample_values = result.sample_values; 
+        // console.log(sample_values); 
+        let otu_ids = result.otu_ids;
+        // console.log(otu_ids); 
+        let otu_labels = result.otu_labels; 
+        // console.log(otu_labels); 
 
         //now you have the data out, so build that bar chart
         //slice to get JUST the top 10 bacteria OTU IDS, which are already sorted in decreasing order
-        var barData = [{
+        let barData = [{
             y: otu_ids.slice(0, 10).map(otu_ids => `OTU ${otu_ids}`).reverse(),
             x: sample_values.slice(0, 10).reverse(),
             text: otu_labels.slice(0, 10).reverse(), 
@@ -89,7 +96,7 @@ function buildCharts(sample) {
             orientation: "h"
         }]; 
 
-        var barLayout = {
+        let barLayout = {
             title: "Top 10 Bacteria Found in This Person's Bellybutton", 
             margin: {
                 top: 20,
@@ -102,7 +109,7 @@ function buildCharts(sample) {
         Plotly.newPlot("bar", barData, barLayout); 
 
         //BUBBLE CHART - HAS PRETTY MUCH THE EXACT SAME DATA AS THE BAR CHART BUT, YOU KNOW, BUBBLES
-        var bubbleTime = {
+        let bubbleTime = {
             x: otu_ids,
             y: sample_values,
             mode: "markers",
@@ -114,9 +121,9 @@ function buildCharts(sample) {
             }
         }; 
 
-        var bubbleData = [bubbleTime]; 
+        let bubbleData = [bubbleTime]; 
 
-        var bubbleLayout = {
+        let bubbleLayout = {
             title: "Bacteria Cultures Per Sample", 
             showlegend: false, 
             height: 600,
@@ -130,75 +137,33 @@ function buildCharts(sample) {
                 left: 0,
             }, 
         };
-        Plotly.newPlot("bubble", bubbleData, bubbleLayout); 
-
-        
-
+        Plotly.newPlot("bubble", bubbleData, bubbleLayout);
     }); //DATA ACCESS ENDS HERE   
-};  //END OF FUNCTION BUILDCHARTS
+};  //END OF FUNCTION buildThoseCharts
 
 
 // INITIALIZE 
 function init() {
-        var pullDownMenu = d3.select("#selDataset"); //selDataset comes from HTML ID
+        let pullDownMenu = d3.select("#selDataset"); //selDataset comes from HTML ID
         d3.json("samples.json").then(function(data) {
 
-            var names = data.names;
-            console.log(data.names);
+            let names = data.names;
+            // console.log(data.names);
 
-            names.forEach((sample) => {
-                pullDownMenu.append("option").property("value" , sample).text(sample); //this creates under the ID selDataset in Insepct and gives you all the IDS; .property gives dropdown, .text gives you the IDs
+            names.forEach((eachRecord) => {
+                pullDownMenu.append("option").property("value" , eachRecord).text(eachRecord); //this creates under the ID selDataset in Insepct and gives you all the IDS; .property gives dropdown, .text gives you the IDs
             });
         });
-    buildMetadata(940); //adding 940 here tells it to run the above function just for person # 940
-    buildCharts(940); //adding 940 here tells it to run the above function just for person # 940
+    getThatData(940); //adding 940 here tells it to run the above function just for person # 940
+    buildThoseCharts(940); //adding 940 here tells it to run the above function just for person # 940
 }; 
 
-// Make it so that the change in sample ID = change in data  
-// WHY IS THE RPM CHART NOT PUT DOWN HERE?????????????????????????
-function optionChanged(nextSample) {
-    buildMetadata(nextSample); //So when you change the sample ID, change the metadata, which changes the data you pull....
-    buildCharts(nextSample); //....which changes the charts 
+
+function optionChanged(nextRecord) {
+    getThatData(nextRecord); //So when you change the sample ID, change the metadata, which changes the data you pull....
+    buildThoseCharts(nextRecord); //....which changes the charts 
 }; 
 
 // INITIALIZE ALL OF IT
 init(); 
 
-
-// MAKE THIS GENERAL AND NOT ID 940 SPECIFIC 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// ###################################################################################################################
-
-// START WITH DROP DOWN AND TRY TO POPULATE IT FOR ONE SPECIFIC ID THIS IS WHAT STEVE SAYS WILL HELP TO GET YOU STARTED 
-
-// SAME CONCEPT AS THE TABLE SECTION FOR THE UFO HW
-
-
-
-
-
-// FROM UFO HW - THIS IS HOW YOU POPULATE THE DROPDOWN 
-// filteredData.forEach((UFO) => {
-//     var row = tbody.append("tr");
-//     Object.entries(UFO).forEach(([key, value]) => {
-//       var cell = row.append("td");
-//       cell.text(value);
-//     });
-//   });
-// }
