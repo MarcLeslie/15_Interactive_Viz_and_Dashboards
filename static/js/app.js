@@ -160,7 +160,7 @@ function buildGaugeChart(eachRecord) {
             {
                 domain: {'x': [0,1], 'y': [0,1]},
                 value: washFreq, 
-                title: {text: "How Often This Person Washes That Belly Button <br> Scrubs Per Week"}, 
+                title: {text: "How Often This Person Washes That Belly Button: <br> Scrubs Per Week"}, 
                 type: "indicator",
                 mode: "gauge+number", //this must be gauge+number  - gauge + number will not work   
                 gauge: {axis: {range: [null, 9], tickvals: [0,1,2,3,4,5,6,7,8,9] }, //have to do "null" instead of 0 because data has null, not 0
